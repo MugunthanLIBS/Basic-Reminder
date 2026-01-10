@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Reminder App</h1>
+            <p>Never forget important tasks again</p>
+        </div>
+
+        <div class="clock-container">
+            <div class="clock-display">
+                <span id="time-display">00:00:00</span>
+                <span id="fast-indicator" class="fast-indicator">FAST</span>
+            </div>
+            <button id="fast-mode-btn" class="fast-mode-btn" title="Toggle fast mode">
+                <i class="fas fa-bolt"></i>
+            </button>
+        </div>
+
+        <div class="reminders-container">
+            <div class="reminders-title">
+                <i class="fas fa-bell"></i>
+                <span>Your Reminders</span>
+            </div>
+            <ul id="reminders-list" class="reminders-list">
+                <li class="empty-reminders">No reminders yet. Add one below!</li>
+            </ul>
+        </div>
+
+        <div class="add-reminder-form">
+            <div class="form-title">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add New Reminder</span>
+            </div>
+            <div class="input-group">
+                <input type="text" id="reminder-text" class="text-input" placeholder="Reminder text">
+                <input type="time" id="reminder-time" class="time-input">
+            </div>
+            <button id="add-reminder-btn" class="add-btn" disabled>
+                <i class="fas fa-plus"></i>
+                Add Reminder
+            </button>
+        </div>
+
+        <div class="footer">
+            <p>Click the clock icon to toggle fast mode (time moves 1 minute per second)</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
