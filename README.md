@@ -63,65 +63,82 @@ Materialized View → 24h Metrics
 
 ---
 
-## 📸 Screenshots
-
-> _(Add your screenshots inside a `/screenshots` folder)_
-
-### Dashboard
-![Dashboard Screenshot](./screenshots/dashboard.png)
-
-### API Response Example
-![API Screenshot](./screenshots/api.png)
-
----
-
 ## ⚙️ Installation
 
 ### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/your-username/high-scale-energy-ingestion-engine.git
 cd high-scale-energy-ingestion-engine
+```
 2️⃣ Install Dependencies
+```bash
 npm install
+```
 3️⃣ Setup PostgreSQL Database
-Create a new database
+```
+- Create a new database
 
-Update .env file with credentials
-
+- Update .env file with credentials
+```
 4️⃣ Run Database Migrations (if available)
+```
 npm run migrate
+```
 5️⃣ Start the Server
+```
 npm start
+```
 Server runs on:
-
+```
 http://localhost:5000
+```
 ▶️ Usage
 Ingest Telemetry Data (Batch)
+```
 POST /api/telemetry/batch
+```
 Get Latest Device Status
+```
 GET /api/devices/:deviceId/status
+```
 Get 24-Hour Performance Analytics
+```
 GET /api/devices/:deviceId/analytics
+```
 🔐 Environment Variables
-Create a .env file in the root directory:
 
+Create a .env file in the root directory:
+```
 PORT=5000
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=your_username
 DB_PASSWORD=your_password
 DB_NAME=energy_engine
+```
+
+---
+
 🔌 API Endpoints
 📥 Telemetry Ingestion
 Method	Endpoint	Description
+```
 POST	/api/telemetry/batch	Batch ingest telemetry data
+```
 📊 Device Status
 Method	Endpoint	Description
+```
 GET	/api/devices/:deviceId/status	Get latest device state (Hot Storage)
+```
 📈 Analytics
 Method	Endpoint	Description
+```
 GET	/api/devices/:deviceId/analytics	Get 24h performance metrics
 GET	/api/devices/low-efficiency	Devices below efficiency threshold
+```
+
+---
+
 📁 Folder Structure
 high-scale-energy-ingestion-engine/
 │
@@ -138,39 +155,35 @@ high-scale-energy-ingestion-engine/
 ├── .env
 ├── package.json
 └── README.md
+
+---
+
 🔮 Future Improvements
-🚀 Kafka-based ingestion for extreme scale
+- 🚀 Kafka-based ingestion for extreme scale
 
-📊 Real-time dashboard (React + WebSockets)
+- 📊 Real-time dashboard (React + WebSockets)
 
-☁️ Cloud-native deployment (Docker + Kubernetes)
+- ☁️ Cloud-native deployment (Docker + Kubernetes)
 
-📈 Advanced anomaly detection using ML
+- 📈 Advanced anomaly detection using ML
 
-🔄 Automatic Materialized View refresh scheduling
+- 🔄 Automatic Materialized View refresh scheduling
 
-📦 CI/CD pipeline integration
+-📦 CI/CD pipeline integration
+
+---
 
 🤝 Contributing
 Contributions are welcome!
 
-Fork the repository
+1. Fork the repository
 
-Create a new branch (feature/your-feature)
+2. Create a new branch (feature/your-feature)
 
-Commit your changes
+3. Commit your changes
 
-Push to your branch
+4. Push to your branch
 
-Open a Pull Request
-
-📜 License
-This project is licensed under the MIT License.
-See the LICENSE file for details.
-
-👨‍💻 Author
-Mugunthan
-
-💼 LinkedIn: Your LinkedIn
-
-🐙 GitHub: Your GitHub
+5. Open a Pull Request
+ 
+---
