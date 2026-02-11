@@ -5,49 +5,64 @@ A **production-ready, high-throughput telemetry ingestion system** designed for 
 Built with a scalable **Hot/Cold storage architecture**, optimized for **time-series energy data**, and engineered for real-time analytics and performance monitoring.
 
 🔗 **GitHub Repository:** [View Repository](#)  
-🌐 **Live Demo:** _Coming Soon_
 
 ---
 
 ## 🚀 Features
 
-- 🔥 **Hot/Cold Data Architecture**
-- 📊 **24-Hour Rolling Analytics** (Materialized View)
-- ⚡ **High-Scale Batch Ingestion**
-- 📈 **Efficiency Ratio Calculation** (DC / AC %)
-- 🚨 **Low-Efficiency Alerts**
-- 🛡 **Transaction-Safe Operations**
-- 🔌 **RESTful API Design**
-- 🏗 Optimized for **Time-Series Data**
-- ⚙️ Designed for **Horizontal Scalability**
+- Polymorphic Ingestion: Single endpoint handles both Meter and Vehicle telemetry streams
+
+- Hot/Cold Data Architecture: Optimized storage strategy for write-heavy ingestion and read-heavy analytics
+
+- Real-time Analytics: 24-hour performance summaries without full table scans
+
+- High Throughput: Batch processing capable of handling 10,000+ devices
+
+- Efficiency Monitoring: Automatic detection of hardware faults via DC/AC efficiency ratios
+
+- Production Ready: Includes connection pooling, transactions, and graceful shutdown
 
 ---
 
 ## 🏗 Architecture Overview
+```
+Devices (10,000+) → Ingestion API → PostgreSQL Database → Analytics API → Dashboard
+          ↓                   ↓              ↓                  ↓
+     Every 60s        Polymorphic      Hot/Cold Storage    Materialized Views
+                      (Meter/Vehicle)    + Indexing        + Fast Queries
+```
+---
+## Database Schema Strategy
 
-Devices (Smart Meters / EVs)
-↓
-REST API (Express)
-↓
-PostgreSQL DB
-Cold Storage → Historical Data
-Hot Storage → Latest Status
-Materialized View → 24h Metrics
+### 🔥 Hot Storage (Current Status)
 
-### 🔥 Hot Storage
-- Stores **latest device state**
-- Uses `UPSERT` for fast updates
-- Optimized for real-time dashboard queries
+- Tables: meter_current_status, vehicle_current_status
 
-### ❄️ Cold Storage
-- Append-only historical telemetry
-- Designed for long-term analytics
-- Efficient for time-series queries
+- Strategy: UPSERT operations (atomic updates)
 
-### 📊 Materialized View
-- Precomputed 24-hour performance metrics
-- Fast aggregation queries
-- Reduces heavy computation load
+- Purpose: Fast dashboard queries, real-time status monitoring
+
+- Optimization: Primary key lookups, minimal row scanning
+
+### ❄️ Cold Storage (Historical Data)
+
+- Tables: meter_telemetry_history, vehicle_telemetry_history
+
+- Strategy: Append-only INSERT operations
+
+- Purpose: Audit trail, long-term reporting, time-series analysis
+
+- Optimization: Time-based indexes for efficient range queries
+
+### 📊 Analytics Layer
+
+- Materialized View: vehicle_24h_performance
+
+- Strategy: Pre-computed aggregates refreshed periodically
+
+- Purpose: Avoid full table scans for analytical queries
+
+- Performance: Sub-second response times even with billions of rows
 
 ---
 
@@ -80,31 +95,17 @@ npm install
 
 - Update .env file with credentials
 ```
-4️⃣ Run Database Migrations (if available)
-```
-npm run migrate
-```
-5️⃣ Start the Server
+4️⃣ Start the Server
 ```
 npm start
 ```
-Server runs on:
+5️⃣ Server runs on:
 ```
 http://localhost:5000
 ```
-▶️ Usage
-Ingest Telemetry Data (Batch)
-```
-POST /api/telemetry/batch
-```
-Get Latest Device Status
-```
-GET /api/devices/:deviceId/status
-```
-Get 24-Hour Performance Analytics
-```
-GET /api/devices/:deviceId/analytics
-```
+
+---
+
 🔐 Environment Variables
 
 Create a .env file in the root directory:
@@ -119,24 +120,33 @@ DB_NAME=energy_engine
 
 ---
 
-🔌 API Endpoints
-📥 Telemetry Ingestion
-Method	Endpoint	Description
+## 🔌 API Endpoints
+
+📥 Ingestion Endpoints
 ```
-POST	/api/telemetry/batch	Batch ingest telemetry data
-```
-📊 Device Status
-Method	Endpoint	Description
-```
-GET	/api/devices/:deviceId/status	Get latest device state (Hot Storage)
-```
-📈 Analytics
-Method	Endpoint	Description
-```
-GET	/api/devices/:deviceId/analytics	Get 24h performance metrics
-GET	/api/devices/low-efficiency	Devices below efficiency threshold
+POST /v1/ingest - Polymorphic telemetry ingestion (auto-detects meter/vehicle)
+
+POST /v1/ingest/batch - Batch ingestion for high-throughput scenarios
+
+GET /v1/ingest/status/:type/:id - Get current device status
 ```
 
+📊 Analytics Endpoints
+```
+GET /v1/analytics/performance/:vehicleId - 24-hour performance summary
+
+GET /v1/analytics/stats - System-wide statistics
+
+GET /v1/analytics/alerts - Efficiency alerts (below 85% threshold)
+
+POST /v1/analytics/refresh - Manually refresh materialized view
+```
+🩺 Health & Monitoring
+```
+GET /v1/health - Service health check
+
+GET / - API documentation and available endpoints
+```
 ---
 
 📁 Folder Structure
@@ -146,12 +156,10 @@ high-scale-energy-ingestion-engine/
 │   ├── controllers/
 │   ├── routes/
 │   ├── services/
-│   ├── db/
-│   ├── models/
-│   └── utils/
-│
-├── migrations/
-├── screenshots/
+│   ├── config/
+│   └── server.js   
+│── database/
+├── scripts/
 ├── .env
 ├── package.json
 └── README.md
