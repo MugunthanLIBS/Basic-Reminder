@@ -150,6 +150,7 @@ GET / - API documentation and available endpoints
 ---
 
 📁 Folder Structure
+```text
 high-scale-energy-ingestion-engine/
 │
 ├── src/
@@ -163,7 +164,7 @@ high-scale-energy-ingestion-engine/
 ├── .env
 ├── package.json
 └── README.md
-
+```
 ---
 
 🔮 Future Improvements
